@@ -1,0 +1,10 @@
+faiss-cpu
+sentence-transformers
+pandas
+tqdm
+langchain
+langchain-community
+langchain-huggingface
+streamlit
+requests
+pypdf
