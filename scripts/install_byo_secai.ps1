@@ -1,6 +1,5 @@
-
 # BYO-SecAI Setup Script (Optional PowerShell Installer)
-# Author: Paladin316 + Aegis (ChatGPT)
+# Author: Paladin316 + Aegis (My AI Assistant)
 
 Write-Host '`n[INFO] Starting BYO-SecAI Setup...' -ForegroundColor Cyan
 
@@ -54,3 +53,5 @@ docker-compose up -d
 
 Write-Host '[✔] Setup complete. Access your assistant at: http://localhost:3000' -ForegroundColor Green
 Write-Host 'To test your assistant, run: python .\scripts\jarvis_no_voice.py' -ForegroundColor Cyan
+
+python scripts\install_dependencies.py
