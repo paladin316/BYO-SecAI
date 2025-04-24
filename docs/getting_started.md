@@ -101,6 +101,13 @@ See [`security.md`](security.md) for more hardening steps.
 
 ---
 
+## 🔁 Automation Scripts
+
+For optional startup automation and task scheduling, see:  
+[`automation_scripts.md`](automation_scripts.md)
+
+---
+
 ## ✅ Next Steps
 
 - Explore model strengths in [`model_guide.md`](model_guide.md)
