@@ -1,4 +1,5 @@
 import requests
+import sys
 
 def ask_jarvis(prompt):
     payload = {
@@ -18,4 +19,8 @@ def ask_jarvis(prompt):
         return f"Error contacting Jarvis: {e}"
 
 if __name__ == "__main__":
-    print(ask_jarvis("What is MITRE technique T1059?"))
+    if len(sys.argv) > 1:
+        prompt = " ".join(sys.argv[1:])
+    else:
+        prompt = input("🧠 Ask Jarvis: ")
+    print(ask_jarvis(prompt))
