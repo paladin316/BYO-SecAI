@@ -37,6 +37,6 @@ This guide helps you set up your own local AI assistant for cybersecurity ops us
 - BYOLLM by Christian Lundkvist
 - Ollama for LLM hosting
 - OpenWebUI for the interface
-- Jarvis (ChatGPT) for development assistance
+- Aegis (My AI Assistant) for development assistance
 
 See [`getting_started.md`](getting_started.md) to begin.
