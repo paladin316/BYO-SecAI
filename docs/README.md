@@ -11,7 +11,7 @@
   <img src="assets/AI-powered_cybersecurity_assistant2.png" alt="BYO-SecAI Logo" width="400"/>
 </p>
 A local-first assistant powered by Ollama + OpenWebUI and custom automation for threat hunting, detection, and IR.
-Inspired by [DIY AI: Build Your Own Digital InfoSec Team with BYOLLM](https://christiant.io/), adapted for cybersecurity operations by Paladin316 with help from Aegis (My AI Assistant). 
+Inspired by <a href="https://www.cactuscon.com/cc13-schedule#">CactusCon 13 Presentation<a/> [DIY AI: Build Your Own Digital InfoSec Team with BYOLLM] (https://christiant.io/), adapted for cybersecurity operations by Paladin316 with help from Aegis (My AI Assistant). 
 
 <p align="center">
 Customized for Cybersecurity Research: Threat Hunting, Detection Engineering, and Incident Response. 
