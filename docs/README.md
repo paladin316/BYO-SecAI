@@ -7,11 +7,15 @@
 </p>
 
 # Build Your Own AI Assistant for Security Research (BYO-SecAI)
+<p align="center">
+  <img src="assets/AI-powered_cybersecurity_assistant2.png" alt="BYO-SecAI Logo" width="400"/>
+</p>
+A local-first assistant powered by Ollama + OpenWebUI and custom automation for threat hunting, detection, and IR.
+Inspired by [DIY AI: Build Your Own Digital InfoSec Team with BYOLLM](https://christiant.io/), adapted for cybersecurity operations by Paladin316 with help from Aegis (My AI Assistant). 
 
-> A local-first assistant powered by Ollama + OpenWebUI and custom automation for threat hunting, detection, and IR.
-Inspired by [DIY AI: Build Your Own Digital InfoSec Team with BYOLLM](https://christiant.io/), adapted for cybersecurity operations by Paladin316 with help from Aegis (My AI Assistant).
-
-> Customized for Cybersecurity Research: Threat Hunting, Detection Engineering, and Incident Response  
+<p align="center">
+Customized for Cybersecurity Research: Threat Hunting, Detection Engineering, and Incident Response. 
+</p>
 
 ## Overview
 This guide helps you set up your own local AI assistant for cybersecurity ops using **Ollama + OpenWebUI**.
