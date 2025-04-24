@@ -1,0 +1,1 @@
+This is an example log entry for testing BYO-SecAI RAG module.
