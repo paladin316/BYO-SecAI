@@ -35,4 +35,4 @@ This guide helps you set up your own local AI assistant for cybersecurity ops us
 - OpenWebUI for the interface
 - Jarvis (ChatGPT) for development assistance
 
-See [`docs/getting_started.md`](docs/getting_started.md) to begin.
+See [`getting_started.md`](getting_started.md) to begin.
