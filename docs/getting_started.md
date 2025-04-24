@@ -1,4 +1,3 @@
-
 # Getting Started with BYO-SecAI
 
 Welcome to **BYO-SecAI** — your own private AI assistant for cybersecurity research.
@@ -71,7 +70,7 @@ python -m venv jarvis_env
 Install required Python packages:
 
 ```powershell
-pip install requests
+pip install -r requirements.txt
 ```
 
 ---
@@ -81,7 +80,7 @@ pip install requests
 Still inside the virtual environment, run:
 
 ```powershell
-python jarvis_no_voice.py
+python scripts/jarvis_no_voice.py
 ```
 
 This script lets you ask questions to your model via API:
@@ -117,3 +116,107 @@ For optional startup automation and task scheduling, see:
 ---
 
 Made with 🛡️ by Paladin316 and 🤖 powered by Aegis (My AI Assistant)
+
+---
+
+## 🧠 Retrieval-Augmented Generation (RAG)
+
+BYO-SecAI supports Retrieval-Augmented Generation (RAG) to let you query your own files — such as logs, PDFs, CSVs, and Markdown — using a vector store (FAISS) and local embedding model (`all-MiniLM-L6-v2`).
+
+### How it works
+1. You drop files into the `data/` folder.
+2. Text is split, embedded, and indexed to `vector_index/`.
+3. You can query your documents with natural language questions.
+4. RAG responses include the top matching document chunks.
+
+---
+
+## 🛠️ RAG Tools and Utilities
+
+### 🔍 `scripts/check_dependencies.py`
+Check which Python modules are missing for RAG:
+
+```bash
+python scripts/check_dependencies.py
+```
+
+---
+
+### 🔧 `scripts/install_dependencies.py`
+Auto-installs all Python dependencies (including FAISS, LangChain, HuggingFace):
+
+```bash
+python scripts/install_dependencies.py
+```
+
+---
+
+### 📁 `scripts/rag_ingest_and_query.py`
+- Ingest your own files into FAISS:
+```bash
+python scripts/rag_ingest_and_query.py --ingest data/
+```
+
+- Ask a question (after ingesting):
+```bash
+python scripts/rag_ingest_and_query.py --query "What logs indicate credential access?"
+```
+
+- Optional logging:
+```bash
+python scripts/rag_ingest_and_query.py --query "MITRE T1059" --logfile logs/query.log
+```
+
+---
+
+### 🧪 `scripts/rag_safety_checklist.py`
+Run a quick health and security check:
+- Ensures `vector_index/` exists
+- Confirms safe deserialization is enabled
+- Checks that logs are being generated
+
+```bash
+python scripts/rag_safety_checklist.py
+```
+
+---
+
+All logs are written to `logs/`. Your vector index is stored in `vector_index/`.
+---
+
+## 🖥️ Streamlit RAG UI (Optional)
+
+If you prefer a web interface instead of the CLI, BYO-SecAI includes a Streamlit dashboard for document-based querying.
+
+### Launch the Streamlit App:
+
+```bash
+streamlit run scripts/streamlit_rag_ui.py
+```
+
+Open your browser and go to [http://localhost:8501](http://localhost:8501)
+
+### What You Can Do:
+
+- 🔍 Ask natural language questions about your ingested files
+- 📁 Upload and index `.pdf`, `.csv`, `.log`, `.txt`, or `.md` files
+- 📌 Get back the top matching documents with relevance context
+
+All documents are stored locally and never leave your machine.
+
+---
+
+## 🛠️ Patch Streamlit Config (Prevent Reload Errors)
+
+To prevent Streamlit errors related to `torch.classes` and FAISS, run this script once:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/patch_streamlit_config.ps1
+```
+
+This script will:
+- Create or update your Streamlit config file at `~\.streamlit\config.toml`
+- Disable file watching and auto-reloading
+- Prevent PyTorch/FAISS crashes due to `torch.classes`
+
+✅ Recommended for all Windows setups using the Streamlit UI.

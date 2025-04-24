@@ -50,6 +50,25 @@ New-NetFirewallRule -DisplayName "Block OpenWebUI External" -Direction Inbound -
 
 ---
 
+## 🔐 RAG Deserialization Security Note
+
+The RAG feature of BYO-SecAI uses LangChain's FAISS vector store. Starting in LangChain v0.2.2, deserializing FAISS indexes requires the following flag:
+
+```python
+FAISS.load_local("vector_index", embedding, allow_dangerous_deserialization=True)
+```
+
+This flag is **safe to enable only** if:
+- You generated the vector index yourself
+- You trust the content of your local vector files
+- You are not loading `.faiss` or `.pkl` files from an untrusted third party
+
+If you load malicious pickle files from unknown sources, it may lead to arbitrary code execution.
+
+📌 **NEVER** set `allow_dangerous_deserialization=True` on files from the internet unless fully inspected.
+
+---
+
 ## ⚠️ Disclaimer
 
 This project is provided **as-is** for personal use in cybersecurity research and educational purposes only.  
