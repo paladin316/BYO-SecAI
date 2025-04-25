@@ -16,16 +16,18 @@ if "%choice%"=="1" (
     echo Launching direct assistant...
     python scripts\jarvis_no_voice.py
 ) else if "%choice%"=="2" (
-    echo Running ingestion for /data ...
-    python scripts\rag_ingest_and_query.py --ingest data
+    if exist vector_index\ ( 
+        echo ✅ Existing vector index detected.
+    ) else (
+        echo 🚧 No vector index found. Ingesting /data...
+        python scripts\rag_ingest_and_query.py --ingest data
+    )
 
     echo.
     echo ============================================
     echo 🔍 RAG Ready! Now ask a question to Jarvis:
     echo ============================================
-    set /p userquery=Enter your query: 
-    for /f %%i in ('powershell -NoProfile -Command "(Get-Date -Format yyyyMMdd_HHmmss)"') do set timestamp=%%i
-    python scripts\rag_ingest_and_query.py --query "%userquery%" --logfile "logs\rag_query_!timestamp!.log"
+    python scriptsag_ingest_and_query.py --query " " 
 ) else (
     echo Invalid choice. Please run the script again.
 )
