@@ -220,3 +220,28 @@ This script will:
 - Prevent PyTorch/FAISS crashes due to `torch.classes`
 
 ✅ Recommended for all Windows setups using the Streamlit UI.
+
+---
+
+## 🔐 FAISS Deserialization Security
+
+BYO-SecAI uses FAISS vector indexing for RAG. To reload saved indexes, we enable:
+
+```python
+allow_dangerous_deserialization=True
+```
+
+This is required by LangChain v0.2+ to prevent untrusted `.pkl` file execution.
+
+### What This Means:
+
+- ✅ Safe if you're loading indexes YOU created on this system.
+- ❌ Do NOT load `.pkl` or `vector_index` folders from unknown or untrusted sources.
+- 🧠 This setting is enabled in `streamlit_rag_ui.py` and `rag_ingest_and_query.py`.
+
+For maximum safety:
+- Use file integrity tools like `hashlib.sha256()` to validate local indexes.
+
+---
+
+📘 **Explore Use Cases**: Want to see what this assistant can do? [Check out the CLI assistant examples »](use_cases.md)
