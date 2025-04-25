@@ -15,10 +15,6 @@ DEFAULT_LOG_DIR = 'logs'
 
 EMBED_MODEL = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')
 
-def log(msg, logfile):
-    with open(logfile, 'a', encoding='utf-8') as logf:
-        logf.write(f"[{datetime.now().isoformat()}] {msg}\n")
-
 def load_documents(folder, logfile):
     documents = []
     log(f"Scanning folder: {folder}", logfile)
@@ -34,7 +30,6 @@ def load_documents(folder, logfile):
                         documents.append(doc)
                 except Exception as e:
                     log(f"[ERROR] CSV {filepath}: {e}", logfile)
-            else:
                 try:
                     with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                         content = f.read()
@@ -67,27 +62,47 @@ def create_index(input_dir, logfile):
 
 def query_rag(query, logfile, top_k=3):
     log(f"Query received: {query}", logfile)
-    db = FAISS.load_local(VECTOR_DIR, EMBED_MODEL, allow_dangerous_deserialization=True)
-    results = db.similarity_search(query, k=top_k)
-    for i, doc in enumerate(results):
-        print(f"--- Document {i+1} ---")
-        print(doc.page_content[:750])
-        print()
+    try:
+        db = FAISS.load_local(VECTOR_DIR, EMBED_MODEL, allow_dangerous_deserialization=True)
+        print(f"🔧 DEBUG: vector_index exists: {os.path.exists(VECTOR_DIR)}")
+        print("🔧 DEBUG #4: FAISS index loaded")
+
+        results = db.similarity_search_with_score(query, k=top_k)  # Get similar docs
+        for i, (doc, score) in enumerate(results):
+            print(f"--- Document {i+1} (Score: {score:.4f}) ---")  # Include score
+            print(doc.page_content)
+            print(f"Source: {doc.metadata['source']}")  # Print source
+            print("🔧 DEBUG #6: Output result")
+            print()
+
+        return results  # Optionally return results for further processing
+
+    except Exception as e:
+        log(f"[ERROR] Query failed: {e}", logfile)
+        print(f"[!] Query failed: {e}")
+        return None  # Or raise the exception, depending on your error handling policy
+
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
+    parser.add_argument('--query-mode', action='store_true', help='Interactive mode using your ingested documents')
     parser.add_argument('--ingest', help="Folder to ingest files from")
     parser.add_argument('--query', help="Query the vector index")
     parser.add_argument('--logfile', help="Log output to this file (default: logs/ingestion_LOGDATE.txt)")
     args = parser.parse_args()
+    print("🔧 DEBUG #1: CLI args parsed")
 
-    os.makedirs(DEFAULT_LOG_DIR, exist_ok=True)
-    if args.logfile:
-        logfile = args.logfile
-    else:
+    if not args.logfile:
+        os.makedirs(DEFAULT_LOG_DIR, exist_ok=True)
         now_str = datetime.now().strftime('%Y%m%d_%H%M%S')
         logfile = os.path.join(DEFAULT_LOG_DIR, f"ingestion_{now_str}.txt")
+    else:
+        logfile = args.logfile
+
+    def log(msg, logfile):
+        with open(logfile, 'a', encoding='utf-8') as logf:
+            logf.write(f"[{datetime.now().isoformat()}] {msg}\n")
 
     if args.ingest:
         create_index(args.ingest, logfile)
