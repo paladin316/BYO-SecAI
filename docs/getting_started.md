@@ -1,8 +1,8 @@
 # Getting Started with BYO-SecAI
 
-Welcome to **BYO-SecAI** — your own private AI assistant for cybersecurity research.
+Welcome to **BYO-SecAI** — your own private AI assistant for cybersecurity research, threat hunting, detection engineering, and intel analysis.
 
-This guide will walk you through setting up the local environment required to run your assistant using open-source tools like **Ollama** and **OpenWebUI**.
+This guide walks you through setting up the local BYO-SecAI environment using open-source LLM runtimes like **Ollama**, enhanced with **plugin orchestration**, **RAG capability**, and **evidence-driven workflows**.
 
 ---
 
@@ -12,236 +12,132 @@ This guide will walk you through setting up the local environment required to ru
 - 16 GB RAM minimum (32 GB recommended)
 - Python 3.10 (not 3.12+)
 - Docker Desktop with WSL2 backend enabled
-- Ollama (for running LLMs locally)
-
-(Optional: NVIDIA GPU with CUDA for improved performance)
+- Ollama (for local LLM runtime)
+- (Optional) NVIDIA GPU with CUDA
 
 ---
 
 ## 📦 Step 1: Install Required Software
 
 ### Python 3.10
-[Download Python 3.10.13](https://www.python.org/downloads/release/python-31013/)
-
-✔️ Check “Add Python to PATH” during installation.
+[Download Python 3.10.13](https://www.python.org/downloads/release/python-31013/)  
+✔️ Select “Add Python to PATH” during installation.
 
 ---
 
 ### Docker Desktop
-[Download Docker Desktop](https://www.docker.com/products/docker-desktop/)
-
-- Enable the **WSL2 backend** during installation
-- Reboot after install if prompted
+[Download Docker Desktop](https://www.docker.com/products/docker-desktop)  
+Enable the **WSL2 backend** during install. Reboot when prompted.
 
 ---
 
-### Ollama (LLM Runtime)
-[Install Ollama](https://ollama.com/download)
-
-Launch a model to test it:
+### Ollama
+[Install Ollama](https://ollama.com/download)  
+Test by running:
 ```bash
 ollama run phi
 ```
 
 ---
 
-## 🌐 Step 2: Setup OpenWebUI
+## 🌐 Step 2: Setup OpenWebUI (Optional GUI)
 
-Clone and run the UI with Docker:
 ```bash
 git clone https://github.com/open-webui/open-webui.git
 cd open-webui
 docker-compose up -d
 ```
 
-Access it at: [http://localhost:3000](http://localhost:3000)
+Browse to: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🤖 Step 3: Setup the Assistant Script
+## 🤖 Step 3: Prepare Your Assistant
 
-Navigate to your `scripts/` folder and create a Python virtual environment:
+Navigate to the `scripts/` folder and set up your environment:
 
 ```powershell
 python -m venv jarvis_env
 .\jarvis_env\Scriptsctivate
-```
-
-Install required Python packages:
-
-```powershell
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🧠 Step 4: Run the Assistant Script
+## 🧠 Step 4: Launch the AI Assistant
 
-Still inside the virtual environment, run:
+Use the new orchestrator to start your assistant with plugin and RAG support:
 
 ```powershell
-python scripts/jarvis_no_voice.py
+.\Launch_LLM-Powered_RAG_Assistant.bat
 ```
 
-This script lets you ask questions to your model via API:
-- Threat hunting questions
-- MITRE ATT&CK queries
-- Detection strategy prompts
+This script:
+- Activates your Python virtual environment
+- Initializes `llm_orchestrator_with_plugins.py`
+- Loads all plugins and RAG modules
+- Creates output in `investigation_evidence/`
+- Offers an interactive CLI with intellisense tab-completion
 
 ---
 
-## 🔐 Security Best Practices
+## 🔌 Supported Plugins
 
-- Keep all traffic on `localhost`
-- Block external access via firewall
-- Use Ollama and OpenWebUI in **offline mode** when possible
+Out-of-the-box support for:
+- 🦠 VirusTotal
+- 🕵️ AbuseIPDB
+- 🌐 urlscan.io
+- ⚙️ Expandable plugin system (see `scripts/plugins/`)
 
-See [`security.md`](security.md) for more hardening steps.
-
----
-
-## 🔁 Automation Scripts
-
-For optional startup automation and task scheduling, see:  
-[`automation_scripts.md`](automation_scripts.md)
-
----
-
-## ✅ Next Steps
-
-- Explore model strengths in [`model_guide.md`](model_guide.md)
-- Automate assistant startup with [`autostart.md`](autostart.md)
-- Review setup requirements in [`requirements.md`](requirements.md)
-
----
-
-Made with 🛡️ by Paladin316 and 🤖 powered by Aegis (My AI Assistant)
+Run `plugin_ioc <ip or domain>` to test.
 
 ---
 
 ## 🧠 Retrieval-Augmented Generation (RAG)
 
-BYO-SecAI supports Retrieval-Augmented Generation (RAG) to let you query your own files — such as logs, PDFs, CSVs, and Markdown — using a vector store (FAISS) and local embedding model (`all-MiniLM-L6-v2`).
+Query your own data files using RAG!  
+Drop files into the `data/` folder and use:
 
-### How it works
-1. You drop files into the `data/` folder.
-2. Text is split, embedded, and indexed to `vector_index/`.
-3. You can query your documents with natural language questions.
-4. RAG responses include the top matching document chunks.
-
----
-
-## 🛠️ RAG Tools and Utilities
-
-### 🔍 `scripts/check_dependencies.py`
-Check which Python modules are missing for RAG:
-
-```bash
-python scripts/check_dependencies.py
-```
-
----
-
-### 🔧 `scripts/install_dependencies.py`
-Auto-installs all Python dependencies (including FAISS, LangChain, HuggingFace):
-
-```bash
-python scripts/install_dependencies.py
-```
-
----
-
-### 📁 `scripts/rag_ingest_and_query.py`
-- Ingest your own files into FAISS:
-```bash
+```powershell
 python scripts/rag_ingest_and_query.py --ingest data/
+python scripts/rag_ingest_and_query.py --query "Show suspicious logins"
 ```
 
-- Ask a question (after ingesting):
-```bash
-python scripts/rag_ingest_and_query.py --query "What logs indicate credential access?"
-```
-
-- Optional logging:
-```bash
-python scripts/rag_ingest_and_query.py --query "MITRE T1059" --logfile logs/query.log
-```
-
----
-
-### 🧪 `scripts/rag_safety_checklist.py`
-Run a quick health and security check:
-- Ensures `vector_index/` exists
-- Confirms safe deserialization is enabled
-- Checks that logs are being generated
-
-```bash
-python scripts/rag_safety_checklist.py
-```
-
----
-
-All logs are written to `logs/`. Your vector index is stored in `vector_index/`.
----
-
-## 🖥️ Streamlit RAG UI (Optional)
-
-If you prefer a web interface instead of the CLI, BYO-SecAI includes a Streamlit dashboard for document-based querying.
-
-### Launch the Streamlit App:
-
-```bash
+Use the Streamlit UI with:
+```powershell
 streamlit run scripts/streamlit_rag_ui.py
 ```
 
-Open your browser and go to [http://localhost:8501](http://localhost:8501)
+---
 
-### What You Can Do:
+## 🧪 Assistant Features
 
-- 🔍 Ask natural language questions about your ingested files
-- 📁 Upload and index `.pdf`, `.csv`, `.log`, `.txt`, or `.md` files
-- 📌 Get back the top matching documents with relevance context
-
-All documents are stored locally and never leave your machine.
+- Natural language command interface
+- Plugin-based CTI lookups
+- Custom script execution (bash, PowerShell, Python)
+- RAG over `.pdf`, `.csv`, `.md`, `.log`
+- Evidence export to `investigation_evidence/`
+- CLI auto-completion for fast workflows
 
 ---
 
-## 🛠️ Patch Streamlit Config (Prevent Reload Errors)
+## ✅ Best Practices
 
-To prevent Streamlit errors related to `torch.classes` and FAISS, run this script once:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/patch_streamlit_config.ps1
-```
-
-This script will:
-- Create or update your Streamlit config file at `~\.streamlit\config.toml`
-- Disable file watching and auto-reloading
-- Prevent PyTorch/FAISS crashes due to `torch.classes`
-
-✅ Recommended for all Windows setups using the Streamlit UI.
+- Keep traffic to `localhost` only
+- Block network access to OpenWebUI/Ollama ports
+- Use offline mode when possible
+- Avoid loading untrusted `.pkl` files in FAISS
 
 ---
 
-## 🔐 FAISS Deserialization Security
+## 📚 More Resources
 
-BYO-SecAI uses FAISS vector indexing for RAG. To reload saved indexes, we enable:
-
-```python
-allow_dangerous_deserialization=True
-```
-
-This is required by LangChain v0.2+ to prevent untrusted `.pkl` file execution.
-
-### What This Means:
-
-- ✅ Safe if you're loading indexes YOU created on this system.
-- ❌ Do NOT load `.pkl` or `vector_index` folders from unknown or untrusted sources.
-- 🧠 This setting is enabled in `streamlit_rag_ui.py` and `rag_ingest_and_query.py`.
-
-For maximum safety:
-- Use file integrity tools like `hashlib.sha256()` to validate local indexes.
+- [`model_guide.md`](model_guide.md) – LLM tips and prompt examples  
+- [`use_cases.md`](use_cases.md) – CLI assistant workflows  
+- [`security.md`](security.md) – Hardening tips  
+- [`automation_scripts.md`](automation_scripts.md) – Startup scripts  
+- [`CHANGELOG.md`](CHANGELOG.md) – See what’s new  
 
 ---
 
-📘 **Explore Use Cases**: Want to see what this assistant can do? [Check out the CLI assistant examples »](use_cases.md)
+Made with 🛡️ by **Paladin316** and 🤖 powered by **Aegis (My AI Assistant)**
