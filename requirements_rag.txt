@@ -8,3 +8,4 @@ langchain-huggingface
 streamlit
 requests
 pypdf
+prompt_toolkit

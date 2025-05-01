@@ -1,0 +1,9 @@
+virustotal_api_key: <YOUR_API_KEY_HERE>
+abuseipdb_api_key: <YOUR_API_KEY_HERE>
+urlscan_api_key: <YOUR_API_KEY_HERE>
+yara_rules_dir: <YOUR_API_KEY_HERE>
+plugins:
+  virustotal: true
+  abuseipdb: true
+  urlscan: true
+  yara_scanner: false
