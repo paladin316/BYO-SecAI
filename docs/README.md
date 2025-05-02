@@ -34,7 +34,7 @@ This guide helps you set up your own local AI assistant for cybersecurity ops us
 5. Use the provided script to interact with your local AI
 
 ## Credits
-- BYOLLM by Christian Lundkvist
+- Christian Taillon - ['DIY AI: Build Your Own Digital InfoSec Team with BYOLLM'](https://christiant.io/)
 - Ollama for LLM hosting
 - OpenWebUI for the interface
 - Retrieval-Augmented Generation (RAG)
